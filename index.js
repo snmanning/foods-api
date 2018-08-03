@@ -20,19 +20,34 @@ const Food = mongoose.model('Food', { type: String, color: String, weight: Numbe
 
 // routes
 // get all the food
-
-
+server.get('/foods', async (req, res) => {
+    try {
+        const foods = await Food.find();
+        res.status(200).json({
+            "foods": foods
+        })
+    } catch(err) {
+        res.status(500).json({
+            msg: "Uh oh...the fridge light is out..."
+        });
+    }
+});
 // get one special food by id
-
-
+server.get('/foods/:id', (req, res) => {
+    res.send(`get ${req/params.id} food`);
+});
 // create a new food
-
-
+server.post('/foods', (req, res) => {
+    res.send('adding a new food');
+});
 // update one special food by id
-
-
+server.put('/foods/:id', (req, res) => {
+    res.send(`updating ${req.params.id} food`);
+});
 // delete one special food by id
-
+server.delete('/foods/:id', (req, res) => {
+    res.send(`deleting ${req.params.id} food`);
+});
 
 // kick it off
 server.listen(port, () => {
