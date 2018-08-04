@@ -54,8 +54,20 @@ server.get('/foods/:id', async (req, res) => {
     }
 });
 // create a new food
-server.post('/foods', (req, res) => {
-    res.send('adding a new food');
+server.post('/foods', async (req, res) => {
+    const { type, color, weight } = req.body;
+    try {
+        const food = new Food({ type, color, weight });
+            await food.save();
+            res.status(200).json({
+                msg: 'placed in the tupperware',
+                food
+            })
+    } catch (err) {
+        res.status(500).json({
+            msg: 'did not get put away'
+        });
+    }
 });
 // update one special food by id
 server.put('/foods/:id', (req, res) => {
