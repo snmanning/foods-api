@@ -3,8 +3,8 @@ const server = express();
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const bodyParser = require('body-parsesr');
-const helmet = require(helmet)
+const bodyParser = require('body-parser');
+const helmet = require('helmet')
 
 // set up the environment variables
 dotenv.config();
@@ -40,8 +40,18 @@ server.get('/foods', async (req, res) => {
     }
 });
 // get one special food by id
-server.get('/foods/:id', (req, res) => {
-    res.send(`get ${req/params.id} food`);
+server.get('/foods/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const foods = await Food.find({ _id: id });
+        res.status(200).json({
+            foods: foods
+        })
+    } catch (err) {
+        res.status(500).json({
+            msg: 'someone ate it...'
+        });
+    }
 });
 // create a new food
 server.post('/foods', (req, res) => {
