@@ -86,8 +86,18 @@ server.put('/foods/:id', async (req, res) => {
     }
 });
 // delete one special food by id
-server.delete('/foods/:id', (req, res) => {
-    res.send(`deleting ${req.params.id} food`);
+server.delete('/foods/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Food.findByIdAndRemove(id);
+        res.status(200).json({
+            msg: 'the leftovers have been removed'
+        })
+    } catch (err) {
+        res.status(500).json({
+            msg: 'you did not throw that away yet'
+        });
+    }
 });
 
 // kick it off
