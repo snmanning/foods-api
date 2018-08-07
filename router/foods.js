@@ -10,9 +10,7 @@ router.get('/foods', async (req, res, next) => {
             "foods": foods
         })
     } catch(err) {
-        res.status(500).json({
-            msg: "Uh oh...the fridge light is out..."
-        });
+        next(err);
     }
 });
 // get one special food by id
@@ -24,25 +22,21 @@ router.get('/foods/:id', async (req, res, next) => {
             foods: foods
         })
     } catch (err) {
-        res.status(500).json({
-            msg: 'someone ate it...'
-        });
+        next(err);
     }
 });
 // create a new food
-router.post('/foods', async (req, res, next) => {
+router.post('/foods', async (req, res) => {
     const { type, color, weight } = req.body;
     try {
         const food = new Food({ type, color, weight });
             await food.save();
-            res.status(200).json({
-                msg: 'placed in the tupperware',
+            res.status(201).json({
+                msg: 'Entry saved',
                 food
             })
     } catch (err) {
-        res.status(500).json({
-            msg: 'did not get put away'
-        });
+        next(err);
     }
 });
 // update one special food by id
@@ -56,9 +50,7 @@ router.put('/foods/:id', async (req, res, next) => {
             food: updatedFood
         })
     } catch (err) {
-        res.status(500).json({
-            msg: 'nothing happened..'
-        });
+        next(err);
     }
 });
 // delete one special food by id
@@ -67,12 +59,10 @@ router.delete('/foods/:id', async (req, res, next) => {
     try {
         await Food.findByIdAndRemove(id);
         res.status(200).json({
-            msg: 'the leftovers have been removed'
+            msg: 'Entry deleted'
         })
     } catch (err) {
-        res.status(500).json({
-            msg: 'you did not throw that away yet'
-        });
+            next(err);
     }
 });
 

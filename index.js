@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet')
-const 
+const errorHandler = require('./middleware/errorHandler');
+const notFoundHandler = require('./middleware/404')
+
 
 // set up the environment variables
 dotenv.config();
@@ -14,7 +16,7 @@ dotenv.config();
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true});
 
 // set up the port
-const port = process.env.PORT || 7007;
+const port = process.env.PORT || 7050;
 
 //routes
 const foodRouter = require('./router/foods');
@@ -28,7 +30,13 @@ server.use(bodyParser.urlencoded({extended:true}));
 // routes
 server.use(foodRouter);
 
+//404 handler
+server.use(notFoundHandler);
+
+//err handler
+server.use(errorHandler);
+
 // kick it off
 server.listen(port, () => {
     console.log(`Now listening on port: ${port}`);
-})
+});
