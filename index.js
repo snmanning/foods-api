@@ -22,8 +22,6 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended:true}));
 
 
-// models
-const Food = mongoose.model('Food', { type: String, color: String, weight: Number });
 
 // routes
 // get all the food
