@@ -1,5 +1,5 @@
 module.exports = function(req, res) {
-    console.log('here');
+    console.log(err);
     res.status(404).json({
         msg: 'Resource not found'
     });

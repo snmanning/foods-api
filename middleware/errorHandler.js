@@ -1,6 +1,11 @@
 module.exports = function errorHandler(err, req, res, next) {
-    console.log('here');
-    res.status(500).json({
-        msg: 'broke'
-    });
+    if(err.name === 'ValidationError') {
+        res.status(500).json({
+            msg:err.message
+        });
+    } else {
+        res.status(500).json({
+            msg: 'Please check your request and try again'
+        });
+    }
 };
